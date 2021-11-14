@@ -1,0 +1,6 @@
+# Ignore all files
+*
+# Ignore all subfolders
+*/
+# Except .gitignore file
+!.gitignore
