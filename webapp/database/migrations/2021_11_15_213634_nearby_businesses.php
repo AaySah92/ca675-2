@@ -19,8 +19,6 @@ class NearbyBusinesses extends Migration
             $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
             $table->string('nearby_business_id', 22)->nullable(false)->index();
             $table->foreign('nearby_business_id')->references('id')->on('businesses')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 

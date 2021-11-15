@@ -20,8 +20,6 @@ class Businesses extends Migration
             $table->string('state', 2)->nullable(false);
             $table->string('latitude', 11)->nullable(false);
             $table->string('longitude', 12)->nullable(false);
-
-            $table->timestamps();
         });
     }
 

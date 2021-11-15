@@ -13,4 +13,9 @@ class NearbyBusiness extends Model
         'business_id',
         'nearby_business_id',
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }

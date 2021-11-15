@@ -18,4 +18,9 @@ class BusinessCheckin extends Model
     protected $casts = [
         'count' => 'int',
     ];
+
+    public function business()
+    {
+        return $this->belongsTo(Business::class);
+    }
 }

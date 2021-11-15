@@ -16,4 +16,14 @@ class Business extends Model
         'latitude',
         'longitude',
     ];
+
+    public function checkins()
+    {
+        return $this->hasMany(BusinessCheckin::class);
+    }
+
+    public function nearbyBusinesses()
+    {
+        return $this->hasMany(NearbyBusiness::class);
+    }
 }

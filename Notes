@@ -1,8 +1,8 @@
 sudo chown -R 1001 data
-docker exec -it burp_mariadb_1 mysql -u burp_user -p
+docker exec -it db mysql -u burp_user -p
 use burp;
 
-MariaDB [burp]> desc businesses;
+MariaDB [burp]> DESC businesses;
 +-----------+-------------+------+-----+---------+-------+
 | Field     | Type        | Null | Key | Default | Extra |
 +-----------+-------------+------+-----+---------+-------+
@@ -18,6 +18,25 @@ MariaDB [burp]> desc businesses;
 INSERT INTO businesses VALUES('6iYb2HFDywm3zjuRg0shjw', 'Oskar Blues Taproom', 'Boulder', 'CO', '40.0175444', '-105.2833481');
 
 App\Models\Business::all();
+
+MariaDB [burp]> DESC business_checkins;
++-------------+--------------------------------------------------------+------+-----+---------+----------------+
+| Field       | Type                                                   | Null | Key | Default | Extra          |
++-------------+--------------------------------------------------------+------+-----+---------+----------------+
+| id          | bigint(20) unsigned                                    | NO   | PRI | NULL    | auto_increment |
+| business_id | varchar(22)                                            | NO   | MUL | NULL    |                |
+| count_type  | enum('7_days','14_days','30_days','60_days','90_days') | NO   |     | NULL    |                |
+| count       | int(11)                                                | NO   |     | NULL    |                |
++-------------+--------------------------------------------------------+------+-----+---------+----------------+
+4 rows in set (0.002 sec)
+
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shjw', '7_days', 40);
+
+
+
+docker exec -it webapp php artisan migrate:rollback
+
+docker exec -it webapp php artisan migrate
 
 CREATE TABLE temp(id INT(5));
 INSERT INTO temp VALUES(4);

@@ -25,8 +25,6 @@ class BusinessCheckins extends Migration
             ])->nullable(false);
             $table->integer('count')->nullable(false);
             $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
-
-            $table->timestamps();
         });
     }
 
