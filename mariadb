@@ -1,6 +1,0 @@
-sudo chown -R 1001 data
-docker exec -it burp_mariadb_1 mysql -u burp_user -p
-use burp;
-create table temp(id int(5));
-insert into temp values(4);
-select * from temp;

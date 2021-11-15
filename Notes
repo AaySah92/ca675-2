@@ -1,0 +1,35 @@
+sudo chown -R 1001 data
+docker exec -it burp_mariadb_1 mysql -u burp_user -p
+use burp;
+
+MariaDB [burp]> desc businesses;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | varchar(22) | NO   | PRI | NULL    |       |
+| name      | varchar(50) | NO   |     | NULL    |       |
+| city      | varchar(50) | NO   |     | NULL    |       |
+| state     | varchar(2)  | NO   |     | NULL    |       |
+| latitude  | varchar(11) | NO   |     | NULL    |       |
+| longitude | varchar(12) | NO   |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+6 rows in set (0.001 sec)
+
+INSERT INTO businesses VALUES('6iYb2HFDywm3zjuRg0shjw', 'Oskar Blues Taproom', 'Boulder', 'CO', '40.0175444', '-105.2833481');
+
+App\Models\Business::all();
+
+CREATE TABLE temp(id INT(5));
+INSERT INTO temp VALUES(4);
+SELECT * FROM temp;
+
+SELECT
+    b.id,
+    count(*) AS near_business_count
+FROM
+    businesses b
+    JOIN near_businesses nb ON b.id = nb.business_id
+GROUP BY
+    b.id
+ORDER BY
+    near_business_count DESC;

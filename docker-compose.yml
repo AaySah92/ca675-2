@@ -1,8 +1,9 @@
 version: '2'
 
 services:
-  mariadb:
+  db:
     image: bitnami/mariadb:10.6
+    container_name: db
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
@@ -10,18 +11,19 @@ services:
       - MARIADB_DATABASE=burp
       - MARIADB_PASSWORD=burp_pass
     volumes:
-      - ./:/bitnami/mariadb
+      - ./:/bitnami/Notes
 
-  myapp:
+  webapp:
     tty: true
     image: bitnami/laravel:8
+    container_name: webapp
     environment:
-      - DB_HOST=mariadb
+      - DB_HOST=db
       - DB_USERNAME=burp_user
       - DB_DATABASE=burp
       - DB_PASSWORD=burp_pass
     depends_on:
-      - mariadb
+      - db
     ports:
       - 3000:3000
     volumes:
