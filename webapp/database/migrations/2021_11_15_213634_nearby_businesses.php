@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BusinessesCloseTo extends Migration
+class NearbyBusinesses extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class BusinessesCloseTo extends Migration
      */
     public function up()
     {
-        Schema::create('businesses_close_to', function(Blueprint $table) {
+        Schema::create('nearby_businesses', function(Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('business_id', 22)->nullable(false)->index();
             $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
-            $table->string('close_to_business_id', 22)->nullable(false)->index();
-            $table->foreign('close_to_business_id')->references('id')->on('businesses')->onDelete('cascade');
+            $table->string('nearby_business_id', 22)->nullable(false)->index();
+            $table->foreign('nearby_business_id')->references('id')->on('businesses')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class BusinessesCloseTo extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('businesses_close_to');
+        Schema::dropIfExists('nearby_businesses');
     }
 }
