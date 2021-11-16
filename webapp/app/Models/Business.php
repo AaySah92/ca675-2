@@ -9,6 +9,8 @@ class Business extends Model
 {
     use HasFactory;
 
+//    protected $with = ['checkins'];
+
     protected $fillable = [
         'name',
         'city',
@@ -24,6 +26,11 @@ class Business extends Model
 
     public function nearbyBusinesses()
     {
-        return $this->hasMany(NearbyBusiness::class);
+        return $this->belongsToMany(
+            Business::class,
+            'nearby_businesses',
+            'business_id',
+            'nearby_business_id',
+        )->with('checkins');
     }
 }

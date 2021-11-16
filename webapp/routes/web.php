@@ -15,7 +15,7 @@ use App\Http\Controllers\BusinessController;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('business.index');
 });
 
 Route::get('/{id}', [BusinessController::class, 'show']);
