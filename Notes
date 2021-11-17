@@ -15,9 +15,9 @@ MariaDB [burp]> DESC businesses;
 +-----------+-------------+------+-----+---------+-------+
 6 rows in set (0.001 sec)
 
-INSERT INTO businesses VALUES('6iYb2HFDywm3zjuRg0shjw', 'Oskar Blues Taproom', 'Boulder', 'CO', '40.0175444', '-105.2833481');
-INSERT INTO businesses VALUES('6iYb2HFDywm3zjuRg0shj2', 'Close 1', 'Boulder', 'CO', '40.0175444', '-105.2833481');
-INSERT INTO businesses VALUES('6iYb2HFDywm3zjuRg0shj3', 'Close 2', 'Boulder', 'CO', '40.0175444', '-105.2833481');
+INSERT INTO businesses VALUES('B1', 'Oskar Blues Taproom', 'Boulder', 'CO', '40.0175444', '-105.2833481');
+INSERT INTO businesses VALUES('B2', 'Close 1', 'Boulder', 'CO', '40.0175444', '-105.2833481');
+INSERT INTO businesses VALUES('B3', 'Close 2', 'Boulder', 'CO', '40.0175444', '-105.2833481');
 
 App\Models\Business::all();
 
@@ -31,8 +31,8 @@ MariaDB [burp]> desc nearby_businesses;
 +--------------------+---------------------+------+-----+---------+----------------+
 3 rows in set (0.001 sec)
 
-INSERT INTO nearby_businesses(business_id, nearby_business_id) VALUES('6iYb2HFDywm3zjuRg0shjw', '6iYb2HFDywm3zjuRg0shj2');
-INSERT INTO nearby_businesses(business_id, nearby_business_id) VALUES('6iYb2HFDywm3zjuRg0shjw', '6iYb2HFDywm3zjuRg0shj3');
+INSERT INTO nearby_businesses(business_id, nearby_business_id) VALUES('B1', 'B2');
+INSERT INTO nearby_businesses(business_id, nearby_business_id) VALUES('B1', 'B3');
 
 MariaDB [burp]> DESC business_checkins;
 +-------------+--------------------------------------------------------+------+-----+---------+----------------+
@@ -45,14 +45,14 @@ MariaDB [burp]> DESC business_checkins;
 +-------------+--------------------------------------------------------+------+-----+---------+----------------+
 4 rows in set (0.002 sec)
 
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shjw', '7_days', 40);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shjw', '14_days', 60);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj2', '7_days', 30);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj2', '14_days', 40);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj2', '30_days', 60);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj3', '7_days', 10);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj3', '14_days', 12);
-INSERT INTO business_checkins(business_id, count_type, count) VALUES('6iYb2HFDywm3zjuRg0shj3', '30_days', 16);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B1', '7_days', 40);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B1', '14_days', 60);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B2', '7_days', 30);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B2', '14_days', 40);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B2', '30_days', 60);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B3', '7_days', 10);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B3', '14_days', 12);
+INSERT INTO business_checkins(business_id, count_type, count) VALUES('B3', '30_days', 16);
 
 
 

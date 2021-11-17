@@ -7,12 +7,7 @@ use Illuminate\Http\Request;
 
 class BusinessController extends Controller
 {
-    const GRAPH_COLUMNS = [
-        'name',
-        'latitude',
-        'longitude',
-        'count',
-    ];
+    const DAYS = ['7_days', '14_days', '30_days', '60_days', '90_days'];
 
     // Not used
     public function index()
@@ -25,26 +20,52 @@ class BusinessController extends Controller
     public function show($id)
     {
         $business = Business::find($id);
-        $graph_data = [];
+        $business_data = collect($business)->only([
+            'name',
+            'city',
+            'state'
+        ])->toArray();
+        $business_data['loc'] = [
+            'lat' => $business->latitude,
+            'lng' => $business->longitude,
+        ];
+        $map_data = [];
+        $chart_data = [];
 
         foreach ($business->nearbyBusinesses->mergeRecursive([$business]) as $nearby_business)
         {
-            array_push($graph_data, array_merge(
-                collect($nearby_business)->only(self::GRAPH_COLUMNS)->toArray(),
-                [
-                    'checkins' => collect($nearby_business->checkins)->mapWithKeys(function ($item, $key) {
-                        return [$item['count_type'] => $item['count']];
-                    })->toArray()
-                ]
-            ));
+            $chart_record = [
+                'name' => $nearby_business->name,
+                'data' => [],
+            ];
+
+            foreach (self::DAYS as $day)
+            {
+                $count = 0;
+                $checkin = $nearby_business->checkins->where('count_type', $day)->first();
+                if($checkin)
+                    $count = $checkin->count;
+                $chart_record['data'][] = $count;
+            }
+            $chart_data[] = $chart_record;
+
+            if($nearby_business->id === $business->id)
+                continue;
+
+            $map_data[] = [
+                'id' => $nearby_business->id,
+                'name' => $nearby_business->name,
+                'loc' => [
+                    'lat' => $nearby_business->latitude,
+                    'lng' => $nearby_business->longitude,
+                ],
+            ];
         }
-        $response = [
-            'business' => $business->toArray(),
-            'graph_data' => $graph_data,
-        ];
 
-        dd($response);
-
-        return view('business.show', $response);
+        return view('business.show', compact([
+            'business_data',
+            'map_data',
+            'chart_data',
+        ]));
     }
 }

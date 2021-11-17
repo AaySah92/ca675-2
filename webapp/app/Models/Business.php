@@ -9,7 +9,7 @@ class Business extends Model
 {
     use HasFactory;
 
-//    protected $with = ['checkins'];
+    public $incrementing = false;
 
     protected $fillable = [
         'name',
@@ -31,6 +31,6 @@ class Business extends Model
             'nearby_businesses',
             'business_id',
             'nearby_business_id',
-        )->with('checkins');
+        );
     }
 }
