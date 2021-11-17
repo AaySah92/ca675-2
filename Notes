@@ -66,11 +66,12 @@ SELECT * FROM temp;
 
 SELECT
     b.id,
-    count(*) AS near_business_count
+    count(*) AS near_count
 FROM
     businesses b
-    JOIN near_businesses nb ON b.id = nb.business_id
+    JOIN nearby_businesses nb ON b.id = nb.business_id
 GROUP BY
     b.id
 ORDER BY
-    near_business_count DESC;
+    near_count DESC
+LIMIT 10;
