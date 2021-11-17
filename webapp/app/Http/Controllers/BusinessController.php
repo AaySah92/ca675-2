@@ -19,7 +19,9 @@ class BusinessController extends Controller
 
     public function show($id)
     {
-        $business = Business::find($id);
+        $business = Business::with(['nearbyBusinesses' => function($query) {
+            $query->take(4);
+        }])->find($id);
         $business_data = collect($business)->only([
             'name',
             'city',
@@ -32,7 +34,7 @@ class BusinessController extends Controller
         $map_data = [];
         $chart_data = [];
 
-        foreach ($business->nearbyBusinesses->take(4)->mergeRecursive([$business]) as $nearby_business)
+        foreach ($business->nearbyBusinesses->mergeRecursive([$business]) as $nearby_business)
         {
             $chart_record = [
                 'name' => $nearby_business->name,

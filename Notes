@@ -64,14 +64,21 @@ CREATE TABLE temp(id INT(5));
 INSERT INTO temp VALUES(4);
 SELECT * FROM temp;
 
-SELECT
-    b.id,
-    count(*) AS near_count
-FROM
-    businesses b
-    JOIN nearby_businesses nb ON b.id = nb.business_id
-GROUP BY
-    b.id
-ORDER BY
-    near_count DESC
-LIMIT 10;
+SELECT bc.business_id, bc.count_type, bc.count FROM ( SELECT b.id, count(*) AS near_count FROM businesses b JOIN nearby_businesses nb ON b.id = nb.business_id GROUP BY b.id HAVING near_count = 4 ORDER BY near_count ) AS temp JOIN business_checkins bc ON temp.id = bc.business_id WHERE bc.count > 5 LIMIT 10;
+
++------------------------+------------+
+| id                     | near_count |
++------------------------+------------+
+| f-5IGCTB8LdQUHEsnDBkyA |          4 |
+| wtaF-WOmdA6ij1YaMEv1ag |          4 |
+| 0ralveZkkF79BkvuzG3fmQ |          4 |
+| ZYQol6-WsSzpUk5IuvVYSA |          4 |
+| XU2sngkc-VMVPE00ng0Zig |          4 |
+| M-IBV1FODYwg6glQkeZ4sg |          4 |
+| 1eWjBhG_GpaO-qd-dtyEsA |          4 |
+| yLzvUd2q680dSKcvME5sfQ |          4 |
+| DL1pe2-_PcXmmmH-kMDeBg |          4 |
+| Gsh1nUTugO-Uns8xQAMpUQ |          4 |
++------------------------+------------+
+10 rows in set (11.780 sec)
+

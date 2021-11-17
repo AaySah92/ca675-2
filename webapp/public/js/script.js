@@ -14,7 +14,7 @@ function addMarker(options) {
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: business_data.loc,
-        zoom: 18,
+        zoom: 14,
     });
 
     new google.maps.Marker({
@@ -47,7 +47,7 @@ function initChart() {
     Highcharts.chart('container', {
         chart: {
             type: 'bar',
-            style: {"height": "500px", "width": "100%"},
+            style: {"height": "600px", "width": "100%"},
         },
         title: {
             text: 'Business check-ins within 5kms'
@@ -89,6 +89,7 @@ function init() {
     prepareData();
     initMap();
     initChart();
+    $("#container").highcharts().reflow();
 }
 
 function formatLoc(obj) {
