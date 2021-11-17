@@ -64,7 +64,28 @@ CREATE TABLE temp(id INT(5));
 INSERT INTO temp VALUES(4);
 SELECT * FROM temp;
 
-SELECT bc.business_id, bc.count_type, bc.count FROM ( SELECT b.id, count(*) AS near_count FROM businesses b JOIN nearby_businesses nb ON b.id = nb.business_id GROUP BY b.id HAVING near_count = 4 ORDER BY near_count ) AS temp JOIN business_checkins bc ON temp.id = bc.business_id WHERE bc.count > 5 LIMIT 10;
+SELECT
+    bc.business_id,
+    bc.count_type,
+    bc.count
+FROM (
+        SELECT
+            b.id,
+            count(*) AS near_count
+        FROM
+            businesses b
+            JOIN nearby_businesses nb ON b.id = nb.business_id
+        GROUP BY
+            b.id
+        HAVING
+            near_count = 4
+        ORDER BY
+            near_count
+    ) AS temp
+    JOIN business_checkins bc ON temp.id = bc.business_id
+WHERE
+    bc.count > 5
+LIMIT 10;
 
 +------------------------+------------+
 | id                     | near_count |
@@ -82,3 +103,16 @@ SELECT bc.business_id, bc.count_type, bc.count FROM ( SELECT b.id, count(*) AS n
 +------------------------+------------+
 10 rows in set (11.780 sec)
 
+
+ariaDB [burp]> SELECT bc.business_id, bc.count_type, bc.count FROM ( SELECT b.id, count(*) AS near_count FROM businesses b JOIN nearby_businesses nb ON b.id = nb.business_id GROUP BY b.id HAVING near_count = 4 ORDER BY near_count ) AS temp JOIN business_checkins bc ON temp.id = bc.business_id WHERE bc.count > 5 LIMIT 10;
++------------------------+------------+-------+
+| business_id            | count_type | count |
++------------------------+------------+-------+
+| Vbu5H2oZE9KcAR0AIwElHg | 60_days    |     7 |
+| Vbu5H2oZE9KcAR0AIwElHg | 90_days    |    10 |
+| c_hukxjmGMJvEEk3mFVwxQ | 60_days    |    10 |
+| c_hukxjmGMJvEEk3mFVwxQ | 90_days    |    12 |
+| wtaF-WOmdA6ij1YaMEv1ag | 60_days    |     6 |
+| wtaF-WOmdA6ij1YaMEv1ag | 90_days    |     7 |
++------------------------+------------+-------+
+6 rows in set (13.333 sec)

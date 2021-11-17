@@ -42,7 +42,7 @@ function initMap() {
 }
 
 function initChart() {
-    let days = ['7_days', '14_days', '30_days', '60_days', '90_days'];
+    let days = ['7_days', '14_days', '30_days']; //, '60_days', '90_days'];
 
     Highcharts.chart('container', {
         chart: {

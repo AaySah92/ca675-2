@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BusinessController extends Controller
 {
-    const DAYS = ['7_days', '14_days', '30_days', '60_days', '90_days'];
+    const DAYS = ['7_days', '14_days', '30_days']; //, '60_days', '90_days'];
 
     // Not used
     public function index()
