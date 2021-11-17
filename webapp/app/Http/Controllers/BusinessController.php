@@ -32,7 +32,7 @@ class BusinessController extends Controller
         $map_data = [];
         $chart_data = [];
 
-        foreach ($business->nearbyBusinesses->mergeRecursive([$business]) as $nearby_business)
+        foreach ($business->nearbyBusinesses->take(4)->mergeRecursive([$business]) as $nearby_business)
         {
             $chart_record = [
                 'name' => $nearby_business->name,

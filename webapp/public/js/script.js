@@ -49,9 +49,6 @@ function initChart() {
             type: 'bar',
             style: {"height": "500px", "width": "100%"},
         },
-        colors: [
-
-        ],
         title: {
             text: 'Business check-ins within 5kms'
         },
