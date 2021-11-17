@@ -19,9 +19,7 @@ class BusinessController extends Controller
 
     public function show($id)
     {
-        $business = Business::with(['nearbyBusinesses' => function($query) {
-            $query->take(4);
-        }])->find($id);
+        $business = Business::find($id);
         $business_data = collect($business)->only([
             'name',
             'city',
