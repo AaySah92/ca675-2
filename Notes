@@ -74,13 +74,14 @@ FROM (
             count(*) AS near_count
         FROM
             businesses b
-            JOIN nearby_businesses nb ON b.id = nb.business_id
+            JOIN nearby_businesses AS nb ON b.id = nb.business_id
         GROUP BY
             b.id
         HAVING
-            near_count = 4
+            near_count = 5
         ORDER BY
-            near_count
+            near_count DESC
+        LIMIT 10
     ) AS temp
     JOIN business_checkins bc ON temp.id = bc.business_id
 WHERE
@@ -116,3 +117,111 @@ ariaDB [burp]> SELECT bc.business_id, bc.count_type, bc.count FROM ( SELECT b.id
 | wtaF-WOmdA6ij1YaMEv1ag | 90_days    |     7 |
 +------------------------+------------+-------+
 6 rows in set (13.333 sec)
+
+SELECT
+    b.id,
+    count(*) AS near_count
+FROM
+    businesses b
+    JOIN nearby_businesses AS nb ON b.id = nb.business_id
+    JOIN businesses AS b_nb ON nb.nearby_business_id = b_nb.id
+    JOIN business_checkins AS b_bc ON (b_nb.id = b_bc.business_id and b_bc.count_type = '7_days')
+WHERE
+    b_bc.count > 0
+GROUP BY
+    b.id
+HAVING
+    near_count > 3
+ORDER BY
+    near_count DESC
+LIMIT 10;
+
+
+
+SELECT
+    nb.business_id,
+    count(*) as near_count
+FROM
+    (
+        SELECT
+            b.id
+        FROM
+            business_checkins bc
+            JOIN businesses b ON b.id = bc.business_id
+        WHERE
+            bc.count_type = '7_days'
+            AND bc.count > 5
+            AND b.state = 'FL'
+        ORDER BY
+            bc.count DESC
+    ) AS temp
+    JOIN nearby_businesses nb ON temp.id = nb.business_id
+GROUP BY
+    nb.business_id
+HAVING
+    near_count > 0
+ORDER BY
+    near_count DESC
+
+
+
+
+
++------------------------+-------+
+| id                     | count |
++------------------------+-------+
+| 7sxYa0-TwWeWGFr5CvMMkw |    42 |
+| ebDlNH8kb6KBwnwKrdjOww |    36 |
+| deigbFsafzWp2l6xneP1Vg |    29 |
+| 2PxZ-fICnd432NJHefXrcA |    28 |
+| NvAYQvjLxwGC-kcWzbg_oA |    22 |
+| 6oMPT9kvEPRiZcfDVX6kAg |    16 |
+| Tjgte2R4e-3JWj4aAnt27g |    16 |
+| IOLwhRIF2wyhbTJl_J2khw |    14 |
+| EqUqaLJxMDxIqvnmaKB4Lw |    12 |
+| GJxFtnTqTiokFedNrW9iDQ |    12 |
++------------------------+-------+
+10 rows in set (0.218 sec)
+
+FL
++------------------------+------------+
+| business_id            | near_count |
++------------------------+------------+
+| d3G94W1ah2r-RTK5FwBGRw |        382 |
+| 6oMPT9kvEPRiZcfDVX6kAg |        373 |
+| ATaQ4GLQisXA7tylsJobhQ |        359 |
+| QnQCuyh1s5db42ipkbW4Fw |        355 |
+| 2I_3ymwLETaRPCNdOnqWTA |        335 |
+| DwmtrYtORcQT5BdHCMkELQ |        333 |
+| MuhdClv101EdjeRWPdHmMg |        327 |
+| cxVsg05tnysqe03tudgkTQ |        264 |
+| HZx9u0DDas1HxSXpn8pjww |        238 |
+| kqe26xbZHbPv1wYutyFcNw |        219 |
+| x21CuTNK9xBh59-2D-c9Lw |        214 |
+| P7xWC-tsKwPsFQ4zFsZxYw |        204 |
+| HddI4LUzPbPyjGLlEopHwg |        202 |
+| fw7hRTCz1H7qu4jzLEEWfA |        198 |
+| rYTL0dsAOn7-nIyLn_6I3g |        186 |
+| tCGM1QZCRd6iYzrpukeKcw |        159 |
+| paHbKmPjwirnIP7esoTPCQ |        158 |
+| xrw5iHbInOQnZkCYeEWRrw |        150 |
+| eaNpTadVytk8WoOM0Et2dg |        149 |
+| ZpwuFRTsbkssDMeSGWQGRw |        127 |
+| BOFD5UmhHvCn_XH3_Gm6ng |        127 |
+| q-Mjar6EWyngPOPv8fpo8Q |        113 |
+| Tjgte2R4e-3JWj4aAnt27g |        107 |
+| NvAYQvjLxwGC-kcWzbg_oA |         95 |
+| PySoEDAeoksJcVCJi8Sjzg |         91 |
+| 0hKVV0b_nKMZwcwTDDy-CA |         80 |
+| z1M7RA9-lRLNNRVB2OpBGw |         70 |
+| 5xS76cdT7THG14H_W4S0Mw |         69 |
+| ePxUeXeb-Clt38KAZszPzQ |         44 |
+| gRrfZUiIIMW2DTyKdfnd2Q |         44 |
+| 2PxZ-fICnd432NJHefXrcA |         28 |
+| WQMaxiUOOvzdl0VDd7Cy8A |         26 |
+| cyBm7p3D2RAoGlDn-AjmaQ |         15 |
++------------------------+------------+
+
+select count(*) from nearby_businesses where business_id = 'cyBm7p3D2RAoGlDn-AjmaQ';
+
+select * from business_checkins where business_id = 'cyBm7p3D2RAoGlDn-AjmaQ';

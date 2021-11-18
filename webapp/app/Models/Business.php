@@ -31,6 +31,6 @@ class Business extends Model
             'nearby_businesses',
             'business_id',
             'nearby_business_id',
-        );
+        )->limit(3);
     }
 }
